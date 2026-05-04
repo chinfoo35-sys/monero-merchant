@@ -1,15 +1,7 @@
 #!/bin/sh
-set -e
-
-# ------------------------
-# Initialize .env from environment variables
-# Auto-generate secrets on first boot
-# ------------------------
 
 ENV_FILE="${APP_DATA_DIR:-/data}/.env"
 if [ ! -f "$ENV_FILE" ]; then
-    echo "Generating initial .env..."
-
     gen_secret() { openssl rand -hex 32; }
     gen_password() { openssl rand -hex 16; }
 
@@ -25,7 +17,6 @@ if [ ! -f "$ENV_FILE" ]; then
     MONERO_DAEMON_ENDPOINT="${MONERO_DAEMON_ENDPOINT:-http://${MONERO_DAEMON_RPC_HOSTNAME:-node.monero.world}:${MONERO_DAEMON_RPC_PORT:-18081}/json_rpc}"
 
     cat > "$ENV_FILE" << EOF
-# Auto-generated on first boot
 DB_HOST=backend-db
 DB_USER=moneromerchant
 DB_PASSWORD=${DB_PASSWORD}
@@ -56,8 +47,6 @@ WALLET_AUTO_REFRESH_PERIOD=2
 
 PORT=8080
 EOF
-
-    echo ".env generated at $ENV_FILE"
 fi
 
 exec ./backend

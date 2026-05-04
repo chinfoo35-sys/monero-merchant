@@ -1,7 +1,4 @@
 services:
-  # ------------------------
-  # MoneroPay wallet dir permissions
-  # ------------------------
   change-vol-ownership:
     image: alpine
     command: "chown -R 1000: /mnt/wallet"
@@ -10,9 +7,6 @@ services:
     networks:
       - ${APP_NETWORK}
 
-  # ------------------------
-  # MoneroPay wallet RPC
-  # ------------------------
   monero-wallet-rpc:
     build:
       context: ./simple-monero-wallet-rpc-docker
@@ -36,9 +30,6 @@ services:
     networks:
       - ${APP_NETWORK}
 
-  # ------------------------
-  # MoneroPay database
-  # ------------------------
   moneropay-postgresql:
     image: postgres:17-alpine
     environment:
@@ -56,9 +47,6 @@ services:
     networks:
       - ${APP_NETWORK}
 
-  # ------------------------
-  # MoneroPay
-  # ------------------------
   moneropay:
     image: registry.gitlab.com/moneropay/moneropay:v2
     environment:
@@ -74,9 +62,6 @@ services:
     networks:
       - ${APP_NETWORK}
 
-  # ------------------------
-  # Backend database
-  # ------------------------
   backend-db:
     image: postgres:16
     restart: unless-stopped
@@ -94,9 +79,6 @@ services:
     networks:
       - ${APP_NETWORK}
 
-  # ------------------------
-  # Backend API
-  # ------------------------
   backend:
     build:
       context: ./backend
